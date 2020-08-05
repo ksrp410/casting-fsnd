@@ -28,7 +28,7 @@ def create_app(test_config=None):
 
     @app.route('/actors', methods=['GET'])
     @requires_auth('get:actors')
-    def get_actors(pyload):
+    def get_actors(payload):
         try:
             actors_query = Actor.query.all()
             formatted_actors = [actor.details() for actor in actors_query]
@@ -36,12 +36,12 @@ def create_app(test_config=None):
                 'success': True,
                 'actors': formatted_actors
             }), 200
-        except:
+        except Exception:
             abort(500)
 
     @app.route('/movies', methods=['GET'])
     @requires_auth('get:movies')
-    def get_movies(pyload):
+    def get_movies(payload):
         try:
             movies_query = Movie.query.all()
             formatted_movies = [movie.details() for movie in movies_query]
@@ -49,12 +49,12 @@ def create_app(test_config=None):
                 'success': True,
                 'movies': formatted_movies
             }), 200
-        except:
+        except Exception:
             abort(500)
 
     @app.route('/actors/<int:id>', methods=['DELETE'])
     @requires_auth('delete:actors')
-    def delete_specific_actor(pyload, id):
+    def delete_specific_actor(payload, id):
         try:
             actor_query = Actor.query.filter_by(id=id).first()
             formatted_actor = actor_query.details()
@@ -63,12 +63,12 @@ def create_app(test_config=None):
                 'success': True,
                 'deleted_actor': formatted_actor
             }), 200
-        except:
+        except Exception:
             abort(404)
 
     @app.route('/movies/<int:id>', methods=['DELETE'])
     @requires_auth('delete:movies')
-    def delete_specific_movie(pyload, id):
+    def delete_specific_movie(payload, id):
         try:
             movie_query = Movie.query.filter_by(id=id).first()
             formatted_movie = movie_query.details()
@@ -77,12 +77,12 @@ def create_app(test_config=None):
                 'success': True,
                 'deleted_movie': formatted_movie
             }), 200
-        except:
+        except Exception:
             abort(404)
 
     @app.route('/actors', methods=['POST'])
     @requires_auth('post:actors')
-    def add_new_actor(pyload):
+    def add_new_actor(payload):
         req_data = request.get_json()
 
         print(req_data)
@@ -101,12 +101,12 @@ def create_app(test_config=None):
                 'success': True,
                 'new_actor': formatted_actor
             }), 200
-        except:
+        except Exception:
             abort(422)
 
     @app.route('/movies', methods=['POST'])
     @requires_auth('post:movies')
-    def add_new_movie(pyload):
+    def add_new_movie(payload):
         req_data = request.get_json()
 
         print(req_data)
@@ -127,12 +127,12 @@ def create_app(test_config=None):
                 'success': True,
                 'new_movie': formatted_movie
             }), 200
-        except:
+        except Exception:
             abort(422)
 
     @app.route('/actors/<int:id>', methods=['PATCH'])
     @requires_auth('patch:actors')
-    def modify_specific_actor(pyload, id):
+    def modify_specific_actor(payload, id):
         req_data = request.get_json()
 
         print(req_data)
@@ -159,12 +159,12 @@ def create_app(test_config=None):
                 'success': True,
                 'modified_actor': formatted_actor
             }), 200
-        except:
+        except Exception:
             abort(422)
 
     @app.route('/movies/<int:id>', methods=['PATCH'])
     @requires_auth('patch:movies')
-    def modify_specific_movie(pyload, id):
+    def modify_specific_movie(payload, id):
         req_data = request.get_json()
 
         print(req_data)
@@ -196,10 +196,10 @@ def create_app(test_config=None):
                 'success': True,
                 'modified_movie': formatted_movie
             }), 200
-        except:
+        except Exception:
             abort(422)
 
-    # ................................................ Error handling ................................................
+    # ...................... Error handling .........................
 
     @app.errorhandler(422)
     def unprocessable(error):
