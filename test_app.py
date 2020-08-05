@@ -111,10 +111,10 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(data['movies'])
 
     def test_08_401_sent_requesting_movies_without_auth_header(self):
-        res = self.client().get('/movies')
-        data = json.loads(res.data)
+        result = self.client().get('/movies')
+        data = json.loads(result.data)
 
-        self.assertEqual(res.status_code, 401)
+        self.assertEqual(result.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Authorization header is expected.')
 
@@ -170,10 +170,10 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(data['deleted_actor'])
 
     def test_014_401_sent_requesting_delete_actors_without_auth_header(self):
-        res = self.client().delete('/actors/1')
-        data = json.loads(res.data)
+        result = self.client().delete('/actors/1')
+        data = json.loads(result.data)
 
-        self.assertEqual(res.status_code, 401)
+        self.assertEqual(result.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Authorization header is expected.')
 
